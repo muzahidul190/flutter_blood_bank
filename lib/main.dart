@@ -1,5 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'appDrawer.dart';
+import 'package:flutter_blood_bank/home.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,27 +14,50 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Blood Bank App',
+      title: 'Splash Screen',
       theme: ThemeData(
+        appBarTheme: AppBarTheme(color: Colors.red.shade900),
         primarySwatch: Colors.red,
       ),
-      home: const HomePage(),
+      home: const SplashScreen(),
     );
   }
 }
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  startTime() async {
+    var duration = const Duration(seconds: 5);
+    return Timer(duration, navigatePage);
+  }
+
+  void navigatePage() {
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (_) => const HomePage()));
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    startTime();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Blood Bank App HomePage'),
-      ),
-      drawer: const AppDrawer(),
-      body: const Center(
-        child: Text('Hello Blood Bank'),
+      backgroundColor: Colors.orange.shade600,
+      body: Center(
+        child: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          maxRadius: 80,
+          child: Image.asset('assets/images/icon.png'),
+        ),
       ),
     );
   }
