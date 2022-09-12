@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.flutter_blood_bank">
    <application
-        android:label="flutter_blood_bank"
+        android:label="Blood Bank"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
