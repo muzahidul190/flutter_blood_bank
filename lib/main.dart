@@ -19,7 +19,9 @@ class MyApp extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Blood Bank App HomePage'),
         ),
-        body: Center(child: Text('Hello Blood Bank')),
+        body: Center(
+          child: Image.asset('assets/images/icon.png'),
+        ),
       ),
     );
   }
