@@ -17,8 +17,8 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Blood Bank App HomePage'),
       ),
       drawer: const AppDrawer(),
-      body: Center(
-        child: Image.asset('assets/images/avatarLatest.jpg'),
+      body: const Center(
+        child: Text('Hello Blood Bank'),
       ),
     );
   }
