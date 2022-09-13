@@ -94,11 +94,14 @@ Widget singleBox({required String id, String? name, String? group}) {
                   backgroundImage: const AssetImage('assets/images/icon.png'),
                   backgroundColor: Colors.transparent,
                   radius: 50,
-                  child: Text(
-                    '$group',
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 28.0),
+                    child: Text(
+                      '$group',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
                     ),
                   ),
                 ),
