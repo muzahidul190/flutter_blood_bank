@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_blood_bank/home.dart';
+import 'package:flutter_blood_bank/pages/home.dart';
 
 void main() {
   runApp(const MyApp());

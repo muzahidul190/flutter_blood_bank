@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blood_bank/about.dart';
-import 'package:flutter_blood_bank/home.dart';
-import 'package:flutter_blood_bank/login.dart';
-import 'package:flutter_blood_bank/registration.dart';
+import 'package:flutter_blood_bank/pages/about.dart';
+import 'package:flutter_blood_bank/pages/home.dart';
+import 'package:flutter_blood_bank/pages/login.dart';
+import 'package:flutter_blood_bank/pages/registration.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});

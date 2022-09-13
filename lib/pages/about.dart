@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blood_bank/appDrawer.dart';
-import 'package:flutter_blood_bank/muzahidul190.dart';
+import 'package:flutter_blood_bank/utility/appDrawer.dart';
+import 'package:flutter_blood_bank/pages/muzahidul190.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({super.key});

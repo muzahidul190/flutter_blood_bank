@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blood_bank/registration.dart';
+import 'package:flutter_blood_bank/pages/registration.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

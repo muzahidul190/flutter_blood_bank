@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blood_bank/login.dart';
+import 'package:flutter_blood_bank/pages/login.dart';
 
 class SignupPage extends StatelessWidget {
   const SignupPage({super.key});
