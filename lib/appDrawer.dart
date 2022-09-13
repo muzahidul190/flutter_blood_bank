@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blood_bank/about.dart';
 import 'package:flutter_blood_bank/home.dart';
 import 'package:flutter_blood_bank/login.dart';
+import 'package:flutter_blood_bank/registration.dart';
 
 class AppDrawer extends StatefulWidget {
   const AppDrawer({super.key});
@@ -33,7 +34,15 @@ class _AppDrawerState extends State<AppDrawer> {
             title: const Text('Login'),
             onTap: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const LoginPage()));
+                  MaterialPageRoute(builder: (context) => LoginPage()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.app_registration_rounded),
+            title: const Text('Register'),
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SignupPage()));
             },
           ),
           ListTile(
