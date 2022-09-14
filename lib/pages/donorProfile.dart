@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blood_bank/utility/appDrawer.dart';
 
 class BloodDonor extends StatefulWidget {
-  const BloodDonor({super.key});
-
+  const BloodDonor({super.key, required this.id});
+  final String id;
   @override
   State<BloodDonor> createState() => _BloodDonorState();
 }
@@ -20,21 +20,26 @@ class _BloodDonorState extends State<BloodDonor> {
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('About Developer'),
+          title: const Text('This Donor Name'),
         ),
         drawer: const AppDrawer(),
         body: Center(
           child: SizedBox(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                CircleAvatar(
+              children: [
+                const CircleAvatar(
                   maxRadius: 50,
-                  backgroundImage: AssetImage('assets/images/avatarLatest.jpg'),
+                  backgroundColor: Colors.transparent,
+                  backgroundImage: AssetImage('assets/images/icon.png'),
+                ),
+                const Text(
+                  'Donor Name',
+                  style: TextStyle(color: Colors.blue),
                 ),
                 Text(
-                  'Muzahidul Islam',
-                  style: TextStyle(color: Colors.blue),
+                  widget.id,
+                  style: const TextStyle(color: Colors.blue),
                 ),
               ],
             ),
