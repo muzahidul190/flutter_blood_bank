@@ -11,6 +11,33 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //My codes starts here
+
+  static const List<String> _districts = [
+    'Khulna',
+    'Dhaka',
+    'Satkhira',
+    'Kumilla',
+    'Jessore',
+    'Rajshahi',
+    'Sylhet',
+    'Chattogram',
+    'Rangpur',
+    'Bhola'
+  ];
+  static const List<String> _bGroups = [
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'AB+',
+    'AB-',
+    'O+',
+    'O-'
+  ];
+
+  //My codes ends here
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -18,27 +45,44 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Blood Bank App HomePage'),
       ),
       drawer: const AppDrawer(),
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            singleBox(id: '3', name: 'Nishad', group: 'O+', context: context),
-            singleBox(id: '1', name: 'Prithvi', group: 'A-', context: context),
-            singleBox(
-                id: '2', name: 'Shahjahan', group: 'AB+', context: context),
-            singleBox(id: '6', name: 'Muzahid', group: 'B+', context: context),
-            singleBox(id: '4', name: 'Masud', group: 'A+', context: context),
-            singleBox(id: '5', name: 'Joyti', group: 'AB-', context: context),
-            singleBox(id: '5', name: 'Joyti', group: 'A-', context: context),
-            singleBox(id: '5', name: 'Joyti', group: 'A-', context: context),
-            singleBox(id: '5', name: 'Joyti', group: 'A-', context: context),
-            singleBox(id: '5', name: 'Joyti', group: 'A-', context: context),
-            singleBox(id: '5', name: 'Joyti', group: 'A-', context: context),
-          ],
-        ),
+      body: Column(
+        children: [
+          Row(
+            children: [],
+          ),
+          SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                singleBox(
+                    id: '3', name: 'Nishad', group: 'O+', context: context),
+                singleBox(
+                    id: '1', name: 'Prithvi', group: 'A-', context: context),
+                singleBox(
+                    id: '2', name: 'Shahjahan', group: 'AB+', context: context),
+                singleBox(
+                    id: '6', name: 'Muzahid', group: 'B+', context: context),
+                singleBox(
+                    id: '4', name: 'Masud', group: 'A+', context: context),
+                singleBox(
+                    id: '5', name: 'Joyti', group: 'AB-', context: context),
+                singleBox(
+                    id: '5', name: 'Joyti', group: 'A-', context: context),
+                singleBox(
+                    id: '5', name: 'Joyti', group: 'A-', context: context),
+                singleBox(
+                    id: '5', name: 'Joyti', group: 'A-', context: context),
+                singleBox(
+                    id: '5', name: 'Joyti', group: 'A-', context: context),
+                singleBox(
+                    id: '5', name: 'Joyti', group: 'A-', context: context),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
