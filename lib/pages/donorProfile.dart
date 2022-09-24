@@ -23,26 +23,99 @@ class _BloodDonorState extends State<BloodDonor> {
           title: const Text('This Donor Name'),
         ),
         drawer: const AppDrawer(),
-        body: Center(
-          child: SizedBox(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const CircleAvatar(
-                  maxRadius: 50,
-                  backgroundColor: Colors.transparent,
-                  backgroundImage: AssetImage('assets/images/icon.png'),
+        body: SizedBox(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  Column(
+                    children: [
+                      const CircleAvatar(
+                        maxRadius: 70,
+                        backgroundColor: Colors.transparent,
+                        backgroundImage:
+                            AssetImage('assets/images/default_male.png'),
+                      ),
+                      const Text(
+                        'Donor Name',
+                        style: TextStyle(color: Colors.blue),
+                      ),
+                      Text(
+                        widget.id,
+                        style: const TextStyle(color: Colors.blue),
+                      ),
+                    ],
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text('Name: '),
+                        Text('Total Donation: ')
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: const [
+                        Text('Donor Name'),
+                        Text('4'),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  //Visible only to Logged in Donors...
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    title:
+                                        const Text('Add new donation Record'),
+                                    content: Padding(
+                                      padding: EdgeInsets.all(8.0),
+                                      child: Column(
+                                        children: [
+                                          const Text('Hello'),
+                                          TextField(
+                                            onChanged: (value) {},
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ));
+                        },
+                        child: const Text('Add new Record'))
+                  ],
                 ),
-                const Text(
-                  'Donor Name',
-                  style: TextStyle(color: Colors.blue),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Text(
+                      'Donation History',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20,
+                      ),
+                    ),
+                    Divider(),
+                  ],
                 ),
-                Text(
-                  widget.id,
-                  style: const TextStyle(color: Colors.blue),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),

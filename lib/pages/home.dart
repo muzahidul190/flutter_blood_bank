@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blood_bank/pages/donorProfile.dart';
 
+import '../jsonOperations/Services.dart';
+import '../jsonOperations/jsonToDart.dart';
 import '../utility/appDrawer.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,28 +15,21 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //My codes starts here
 
-  static const List<String> _districts = [
-    'Khulna',
-    'Dhaka',
-    'Satkhira',
-    'Kumilla',
-    'Jessore',
-    'Rajshahi',
-    'Sylhet',
-    'Chattogram',
-    'Rangpur',
-    'Bhola'
-  ];
-  static const List<String> _bGroups = [
-    'A+',
-    'A-',
-    'B+',
-    'B-',
-    'AB+',
-    'AB-',
-    'O+',
-    'O-'
-  ];
+  List<Donor>? _donors;
+  bool _loading = false;
+  @override
+  void initState() {
+    super.initState();
+    _loading = true;
+    Services.getDonors().then((users) {
+      setState(() {
+        print('started');
+        _donors = users;
+        _loading = false;
+        print('ended');
+      });
+    });
+  }
 
   //My codes ends here
 
@@ -42,47 +37,20 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Blood Bank App HomePage'),
+        title: Text(_loading ? 'Loading...' : 'Blood Bank App HomePage'),
       ),
       drawer: const AppDrawer(),
-      body: Column(
-        children: [
-          Row(
-            children: [],
-          ),
-          SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                singleBox(
-                    id: '3', name: 'Nishad', group: 'O+', context: context),
-                singleBox(
-                    id: '1', name: 'Prithvi', group: 'A-', context: context),
-                singleBox(
-                    id: '2', name: 'Shahjahan', group: 'AB+', context: context),
-                singleBox(
-                    id: '6', name: 'Muzahid', group: 'B+', context: context),
-                singleBox(
-                    id: '4', name: 'Masud', group: 'A+', context: context),
-                singleBox(
-                    id: '5', name: 'Joyti', group: 'AB-', context: context),
-                singleBox(
-                    id: '5', name: 'Joyti', group: 'A-', context: context),
-                singleBox(
-                    id: '5', name: 'Joyti', group: 'A-', context: context),
-                singleBox(
-                    id: '5', name: 'Joyti', group: 'A-', context: context),
-                singleBox(
-                    id: '5', name: 'Joyti', group: 'A-', context: context),
-                singleBox(
-                    id: '5', name: 'Joyti', group: 'A-', context: context),
-              ],
-            ),
-          ),
-        ],
+      body: Container(
+        color: Colors.white,
+        child: ListView.builder(
+            itemCount: null == _donors ? 0 : _donors!.length,
+            itemBuilder: (context, index) {
+              Donor donor = _donors![index];
+              return ListTile(
+                title: Text(donor.name),
+                subtitle: Text(donor.bloodGroup),
+              );
+            }),
       ),
     );
   }
