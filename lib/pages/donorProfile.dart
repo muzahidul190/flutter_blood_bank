@@ -1,26 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blood_bank/jsonOperations/Services.dart';
 import 'package:flutter_blood_bank/utility/appDrawer.dart';
+
+import '../jsonOperations/jsonToDart.dart';
 
 class BloodDonor extends StatefulWidget {
   const BloodDonor({super.key, required this.id});
-  final String id;
+  final int id;
   @override
   State<BloodDonor> createState() => _BloodDonorState();
 }
 
 class _BloodDonorState extends State<BloodDonor> {
+  //My code start here
+
+  List<Donor>? _donor;
+  bool _loading = true;
+  @override
+  void initState() {
+    super.initState();
+    _loading = true;
+    Services.getDonor(widget.id).then((user) {
+      setState(() {
+        _donor = user;
+        _loading = false;
+      });
+    });
+  }
+
+  //My code ends here...
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Login Page',
+      title: 'Donor Profile',
       theme: ThemeData(
         appBarTheme: AppBarTheme(color: Colors.red.shade900),
         primarySwatch: Colors.red,
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('This Donor Name'),
+          title: Text(_loading
+              ? 'Loading...'
+              : (_donor == null ? 'No Donor Found' : _donor![0].name)),
         ),
         drawer: const AppDrawer(),
         body: SizedBox(
@@ -37,11 +60,11 @@ class _BloodDonorState extends State<BloodDonor> {
                             AssetImage('assets/images/default_male.png'),
                       ),
                       const Text(
-                        'Donor Name',
+                        'Donor ID',
                         style: TextStyle(color: Colors.blue),
                       ),
                       Text(
-                        widget.id,
+                        widget.id.toString(),
                         style: const TextStyle(color: Colors.blue),
                       ),
                     ],
@@ -62,8 +85,8 @@ class _BloodDonorState extends State<BloodDonor> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text('Donor Name'),
+                      children: [
+                        Text(_donor![0].name),
                         Text('4'),
                       ],
                     ),

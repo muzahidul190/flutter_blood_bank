@@ -15,6 +15,20 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   //My codes starts here
 
+  static const List<String> _groups = [
+    'All',
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'AB+',
+    'AB-',
+    'O+',
+    'O-'
+  ];
+  String selectedGroup = _groups.first;
+  int donorCounter = 0;
+
   List<Donor>? _donors;
   bool _loading = false;
   @override
@@ -40,25 +54,70 @@ class _HomePageState extends State<HomePage> {
         title: Text(_loading ? 'Loading...' : 'Blood Bank App HomePage'),
       ),
       drawer: const AppDrawer(),
-      body: Container(
-        color: Colors.white,
-        child: ListView.builder(
-            itemCount: null == _donors ? 0 : _donors!.length,
-            itemBuilder: (context, index) {
-              Donor donor = _donors![index];
-              return ListTile(
-                title: Text(donor.name),
-                subtitle: Text(donor.bloodGroup),
-              );
-            }),
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              const Text('Select Blood Group'),
+              DropdownButton(
+                value: selectedGroup,
+                icon: const Icon(Icons.arrow_drop_down),
+                elevation: 16,
+                underline: Container(height: 2),
+                onChanged: (String? value) {
+                  setState(() {
+                    selectedGroup = value!;
+                    donorCounter = 0;
+                  });
+                },
+                items: _groups.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+              ),
+            ],
+          ),
+          Expanded(
+            child: ListView.builder(
+                padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: null == _donors ? 0 : _donors!.length,
+                itemBuilder: (context, index) {
+                  Donor donor = _donors![index];
+                  if (donor.bloodGroup == selectedGroup ||
+                      selectedGroup == 'All') {
+                    donorCounter++;
+                    print(donorCounter);
+                    return singleBox(
+                        id: donor.id,
+                        name: donor.name,
+                        address: donor.location,
+                        group: donor.bloodGroup,
+                        context: context);
+                  } else {
+                    return const SizedBox(
+                      height: 0,
+                    );
+                  }
+                }),
+          ),
+          Center(
+            child: Text(donorCounter == 0 ? 'No ' : '$donorCounter'),
+          ),
+        ],
       ),
     );
   }
 }
 
 Widget singleBox(
-    {required String id,
+    {required int id,
     String? name,
+    String? address,
     String? group,
     required BuildContext context}) {
   return GestureDetector(
@@ -75,67 +134,48 @@ Widget singleBox(
         child: Padding(
           padding: const EdgeInsets.only(left: 9, right: 9, top: 3, bottom: 2),
           child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      const Text(
-                        'Name: ',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      Text(
-                        '$name',
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 19),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      const Text(
-                        'Id: ',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20),
-                      ),
-                      Text(
-                        id,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 19),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              Container(
-                child: Center(
-                  child: CircleAvatar(
-                    backgroundImage: const AssetImage('assets/images/icon.png'),
-                    backgroundColor: Colors.transparent,
-                    radius: 50,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 28.0),
-                      child: Text(
-                        '$group',
-                        style: const TextStyle(
+              Padding(
+                padding: const EdgeInsets.only(left: 12.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      '$name',
+                      style: const TextStyle(
+                          color: Colors.white,
                           fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                        ),
+                          fontSize: 19),
+                    ),
+                    Text(
+                      '$address',
+                      style: const TextStyle(color: Colors.white, fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+              Center(
+                child: CircleAvatar(
+                  backgroundImage: const AssetImage('assets/images/icon.png'),
+                  backgroundColor: Colors.transparent,
+                  radius: 50,
+                  child: Padding(
+                    padding: const EdgeInsets.only(top: 28.0),
+                    child: Text(
+                      '$group',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
                       ),
                     ),
                   ),
-                  // child: Text(
-                  //   '$group',
-                  //   style: TextStyle(color: Colors.white),
-                  // ),
                 ),
+                // child: Text(
+                //   '$group',
+                //   style: TextStyle(color: Colors.white),
+                // ),
               ),
             ],
           ),
@@ -146,17 +186,16 @@ Widget singleBox(
 }
 
 AlertDialog homeDbleTapDialogBox(
-    {required String? id, required BuildContext context}) {
+    {required int id, required BuildContext context}) {
   return AlertDialog(
     title: const Text('Summery'),
     content: Text('The person\'s id is: $id'),
     actions: [
       TextButton(
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => BloodDonor(id: id ?? '')));
+            Navigator.pop(context);
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => BloodDonor(id: id)));
           },
           child: const Text('Show Details')),
       TextButton(
