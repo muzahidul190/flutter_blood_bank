@@ -51,23 +51,25 @@ class _BloodDonorState extends State<BloodDonor> {
             children: [
               Row(
                 children: [
-                  Column(
-                    children: [
-                      const CircleAvatar(
-                        maxRadius: 70,
-                        backgroundColor: Colors.transparent,
-                        backgroundImage:
-                            AssetImage('assets/images/default_male.png'),
-                      ),
-                      const Text(
-                        'Donor ID',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                      Text(
-                        widget.id.toString(),
-                        style: const TextStyle(color: Colors.blue),
-                      ),
-                    ],
+                  Expanded(
+                    child: Column(
+                      children: [
+                        const CircleAvatar(
+                          maxRadius: 70,
+                          backgroundColor: Colors.transparent,
+                          backgroundImage:
+                              AssetImage('assets/images/default_male.png'),
+                        ),
+                        const Text(
+                          'Donor Name',
+                          style: TextStyle(color: Colors.blue),
+                        ),
+                        Text(
+                          widget.id.toString(),
+                          style: const TextStyle(color: Colors.blue),
+                        ),
+                      ],
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

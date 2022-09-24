@@ -40,6 +40,7 @@ class _HomePageState extends State<HomePage> {
         print('started');
         _donors = users;
         _loading = false;
+        donorCounter = _donors!.length;
         print('ended');
       });
     });
@@ -68,7 +69,12 @@ class _HomePageState extends State<HomePage> {
                 onChanged: (String? value) {
                   setState(() {
                     selectedGroup = value!;
-                    donorCounter = 0;
+                    if (value == 'All') {
+                      donorCounter = _donors!.length;
+                    } else {
+                      donorCounter =
+                          _donors!.where((c) => c.bloodGroup == value).length;
+                    }
                   });
                 },
                 items: _groups.map<DropdownMenuItem<String>>((String value) {
@@ -90,8 +96,6 @@ class _HomePageState extends State<HomePage> {
                   Donor donor = _donors![index];
                   if (donor.bloodGroup == selectedGroup ||
                       selectedGroup == 'All') {
-                    donorCounter++;
-                    print(donorCounter);
                     return singleBox(
                         id: donor.id,
                         name: donor.name,
@@ -106,7 +110,9 @@ class _HomePageState extends State<HomePage> {
                 }),
           ),
           Center(
-            child: Text(donorCounter == 0 ? 'No ' : '$donorCounter'),
+            child: Text('${donorCounter == 0 ? 'No' : '$donorCounter'} donor'
+                '${donorCounter == 1 ? '' : 's'}'
+                ' found.'),
           ),
         ],
       ),
