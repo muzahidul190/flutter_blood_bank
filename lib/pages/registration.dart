@@ -1,8 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blood_bank/pages/login.dart';
 
-class SignupPage extends StatelessWidget {
+class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
+
+  @override
+  State<SignupPage> createState() => _SignupPageState();
+}
+
+class _SignupPageState extends State<SignupPage> {
+  static const List<String> _groups = [
+    'A+',
+    'A-',
+    'B+',
+    'B-',
+    'AB+',
+    'AB-',
+    'O+',
+    'O-'
+  ];
+  String selectedGroup = _groups.first;
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +81,25 @@ class SignupPage extends StatelessWidget {
                           makeInput(label: "Email"),
                           makeInput(label: "Password", obsureText: true),
                           makeInput(label: "Confirm Pasword", obsureText: true),
-                          makeInput(label: "Blood Group", obsureText: true)
+                          const Text('Select Blood Group'),
+                          DropdownButton(
+                            value: selectedGroup,
+                            icon: const Icon(Icons.arrow_drop_down),
+                            elevation: 16,
+                            underline: Container(height: 2),
+                            onChanged: (String? value) {
+                              setState(() {
+                                selectedGroup = value!;
+                              });
+                            },
+                            items: _groups
+                                .map<DropdownMenuItem<String>>((String value) {
+                              return DropdownMenuItem<String>(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
                         ],
                       ),
                     ),

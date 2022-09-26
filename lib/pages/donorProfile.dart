@@ -20,9 +20,9 @@ class _BloodDonorState extends State<BloodDonor> {
   void initState() {
     super.initState();
     _loading = true;
-    Services.getDonor(widget.id).then((user) {
+    Services.getDonor(widget.id).then((donor) {
       setState(() {
-        _donor = user;
+        _donor = donor;
         _loading = false;
       });
     });

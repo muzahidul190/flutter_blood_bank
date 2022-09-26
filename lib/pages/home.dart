@@ -37,11 +37,9 @@ class _HomePageState extends State<HomePage> {
     _loading = true;
     Services.getDonors().then((users) {
       setState(() {
-        print('started');
         _donors = users;
         _loading = false;
         donorCounter = _donors!.length;
-        print('ended');
       });
     });
   }
@@ -109,10 +107,13 @@ class _HomePageState extends State<HomePage> {
                   }
                 }),
           ),
-          Center(
-            child: Text('${donorCounter == 0 ? 'No' : '$donorCounter'} donor'
-                '${donorCounter == 1 ? '' : 's'}'
-                ' found.'),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Center(
+              child: Text('${donorCounter == 0 ? 'No' : '$donorCounter'} donor'
+                  '${donorCounter == 1 ? '' : 's'}'
+                  ' found.'),
+            ),
           ),
         ],
       ),
@@ -200,8 +201,9 @@ AlertDialog homeDbleTapDialogBox(
       TextButton(
           onPressed: () {
             Navigator.pop(context);
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => BloodDonor(id: id)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              return BloodDonor(id: id);
+            }));
           },
           child: const Text('Show Details')),
       TextButton(
