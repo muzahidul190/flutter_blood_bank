@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blood_bank/pages/about.dart';
 import 'package:flutter_blood_bank/pages/home.dart';
 import 'package:flutter_blood_bank/pages/login.dart';
+import 'package:flutter_blood_bank/pages/recentDonations.dart';
 import 'package:flutter_blood_bank/pages/registration.dart';
 
 class AppDrawer extends StatefulWidget {
@@ -27,6 +28,16 @@ class _AppDrawerState extends State<AppDrawer> {
             onTap: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const HomePage()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Icons.recent_actors),
+            title: const Text('Recent Donations'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const RecentDonations()));
             },
           ),
           ListTile(

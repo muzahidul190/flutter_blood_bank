@@ -1,3 +1,4 @@
+import 'package:flutter_blood_bank/jsonOperations/donationRecords.dart';
 import 'package:http/http.dart' as http;
 
 import 'jsonToDart.dart';
@@ -26,6 +27,25 @@ class Services {
 
     final List<Donor> donor = donorFromJson(jsonData);
     return donor;
+  }
+
+  static Future<List<Record>> getRecords() async {
+    var url = Uri.parse('http://10.0.2.2:5000/records');
+    http.Response response = await http.get(url);
+    final jsonData = response.body;
+
+    final List<Record> records = recordsFromJson(jsonData);
+    return records;
+  }
+
+  static Future<List<Record>> getRecord(int donorId) async {
+    var uri = 'http://10.0.2.2:5000/record/$donorId';
+    var url = Uri.parse(uri);
+    http.Response response = await http.get(url);
+    final jsonData = response.body;
+
+    final List<Record> record = recordsFromJson(jsonData);
+    return record;
   }
 }
 
