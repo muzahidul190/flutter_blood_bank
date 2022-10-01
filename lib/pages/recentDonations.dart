@@ -1,6 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_blood_bank/jsonOperations/Services.dart';
 import 'package:flutter_blood_bank/utility/appDrawer.dart';
+import 'package:intl/intl.dart';
 
 import '../jsonOperations/donationRecords.dart';
 
@@ -50,9 +53,11 @@ class _RecentDonationsState extends State<RecentDonations> {
               itemCount: null == _records ? 0 : _records!.length,
               itemBuilder: (context, index) {
                 Record record = _records![index];
+                var dt = HttpDate.parse(record.date);
                 return ListTile(
                   title: Text(record.donorName.toString()),
-                  subtitle: Text(record.date),
+                  subtitle: Text(
+                      '${DateFormat('MMMM').format(dt)} ${dt.day}, ${dt.year}'),
                 );
               },
             ),
