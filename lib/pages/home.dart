@@ -50,40 +50,43 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(_loading ? 'Loading...' : 'Blood Bank App HomePage'),
+        title: Text(_loading
+            ? (_donors == null ? 'No Donor found!' : 'Loading...')
+            : 'Blood Bank App HomePage'),
       ),
       drawer: const AppDrawer(),
       body: Column(
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              const Text('Select Blood Group'),
-              DropdownButton(
-                value: selectedGroup,
-                icon: const Icon(Icons.arrow_drop_down),
-                elevation: 16,
-                underline: Container(height: 2),
-                onChanged: (String? value) {
-                  setState(() {
-                    selectedGroup = value!;
-                    if (value == 'All') {
-                      donorCounter = _donors!.length;
-                    } else {
-                      donorCounter =
-                          _donors!.where((c) => c.bloodGroup == value).length;
-                    }
-                  });
-                },
-                items: _groups.map<DropdownMenuItem<String>>((String value) {
-                  return DropdownMenuItem<String>(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-              ),
-            ],
-          ),
+          if (_donors != null)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Text('Select Blood Group'),
+                DropdownButton(
+                  value: selectedGroup,
+                  icon: const Icon(Icons.arrow_drop_down),
+                  elevation: 16,
+                  underline: Container(height: 2),
+                  onChanged: (String? value) {
+                    setState(() {
+                      selectedGroup = value!;
+                      if (value == 'All') {
+                        donorCounter = _donors!.length;
+                      } else {
+                        donorCounter =
+                            _donors!.where((c) => c.bloodGroup == value).length;
+                      }
+                    });
+                  },
+                  items: _groups.map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
           Expanded(
             child: ListView.builder(
                 padding: const EdgeInsets.only(left: 8.0, right: 8.0),

@@ -118,17 +118,22 @@ class _BloodDonorState extends State<BloodDonor> {
                           showDialog(
                               context: context,
                               builder: (context) => AlertDialog(
-                                    title:
-                                        const Text('Add new donation Record'),
-                                    content: Padding(
-                                      padding: EdgeInsets.all(8.0),
-                                      child: Column(
-                                        children: [
-                                          const Text('Hello'),
-                                          TextField(
-                                            onChanged: (value) {},
+                                    content: SingleChildScrollView(
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SizedBox(
+                                          height: 170,
+                                          child: Column(
+                                            children: [
+                                              const Text(
+                                                  'Add new donation Record'),
+                                              const Text('Hello'),
+                                              TextField(
+                                                onChanged: (value) {},
+                                              ),
+                                            ],
                                           ),
-                                        ],
+                                        ),
                                       ),
                                     ),
                                   ));

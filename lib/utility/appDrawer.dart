@@ -34,7 +34,7 @@ class _AppDrawerState extends State<AppDrawer> {
             leading: const Icon(Icons.recent_actors),
             title: const Text('Recent Donations'),
             onTap: () {
-              Navigator.push(
+              Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const RecentDonations()));
