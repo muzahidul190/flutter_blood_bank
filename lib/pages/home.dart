@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_blood_bank/pages/donorProfile.dart';
+import 'package:flutter_blood_bank/utility/doubleTapDialogueBox.dart';
 
 import '../jsonOperations/Services.dart';
 import '../jsonOperations/jsonToDart.dart';
@@ -134,7 +134,8 @@ Widget singleBox(
     onDoubleTap: (() {
       showDialog(
           context: context,
-          builder: (context) => homeDbleTapDialogBox(id: id, context: context));
+          builder: (context) =>
+              HomeDoubleTapDialogBox(id: id, context: context));
     }),
     child: Container(
       color: Colors.teal,
@@ -195,26 +196,26 @@ Widget singleBox(
   );
 }
 
-AlertDialog homeDbleTapDialogBox(
-    {required int id, required BuildContext context}) {
-  return AlertDialog(
-    title: const Text('Summery'),
-    content: Text('The person\'s id is: $id'),
-    actions: [
-      TextButton(
-          onPressed: () {
-            Navigator.pop(context);
-            Navigator.push(context, MaterialPageRoute(builder: (context) {
-              return BloodDonor(id: id);
-            }));
-          },
-          child: const Text('Show Details')),
-      TextButton(
-        onPressed: (() {
-          Navigator.pop(context, const Text('Dismiss'));
-        }),
-        child: const Text('Dismiss'),
-      ),
-    ],
-  );
-}
+// AlertDialog homeDbleTapDialogBox(
+//     {required int id, required BuildContext context}) {
+//   return AlertDialog(
+//     title: const Text('Summery'),
+//     content: Text('The person\'s id is: $id'),
+//     actions: [
+//       TextButton(
+//           onPressed: () {
+//             Navigator.pop(context);
+//             Navigator.push(context, MaterialPageRoute(builder: (context) {
+//               return BloodDonor(id: id);
+//             }));
+//           },
+//           child: const Text('Show Details')),
+//       TextButton(
+//         onPressed: (() {
+//           Navigator.pop(context, const Text('Dismiss'));
+//         }),
+//         child: const Text('Dismiss'),
+//       ),
+//     ],
+//   );
+// }
