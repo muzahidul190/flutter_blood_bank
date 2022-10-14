@@ -24,7 +24,8 @@ class _BloodDonorState extends State<BloodDonor> {
   bool _loading = true;
   @override
   void initState() {
-    dateinput.text = DateTime.now().toString();
+    DateTime now = DateTime.now();
+    dateinput.text = DateFormat('yyyy-MM-dd').format(now);
     super.initState();
     _loading = true;
     Services.getDonor(widget.id).then((donor) {
