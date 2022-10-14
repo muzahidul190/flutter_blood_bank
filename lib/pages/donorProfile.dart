@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blood_bank/jsonOperations/Services.dart';
 import 'package:flutter_blood_bank/jsonOperations/donationRecords.dart';
 import 'package:flutter_blood_bank/utility/appDrawer.dart';
+import 'package:intl/intl.dart';
 
 import '../jsonOperations/jsonToDart.dart';
 
@@ -15,12 +16,15 @@ class BloodDonor extends StatefulWidget {
 class _BloodDonorState extends State<BloodDonor> {
   //My code start here
 
+  TextEditingController dateinput = TextEditingController();
+
   List<Donor>? _donor;
   List<Record>? _records;
   int recordCounter = 0;
   bool _loading = true;
   @override
   void initState() {
+    dateinput.text = DateTime.now().toString();
     super.initState();
     _loading = true;
     Services.getDonor(widget.id).then((donor) {
@@ -108,67 +112,109 @@ class _BloodDonorState extends State<BloodDonor> {
                   ),
                 ],
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  //Visible only to Logged in Donors...
-                  children: [
-                    TextButton(
-                        onPressed: () {
-                          showDialog(
-                              context: context,
-                              builder: (context) => AlertDialog(
-                                    content: SingleChildScrollView(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: SizedBox(
-                                          height: 170,
-                                          child: Column(
-                                            children: [
-                                              const Text(
-                                                  'Add new donation Record'),
-                                              const Text('Hello'),
-                                              TextField(
-                                                onChanged: (value) {},
-                                              ),
-                                            ],
+              if (true)
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Row(
+                    //Visible only to Logged in Donors...
+                    children: [
+                      TextButton(
+                          onPressed: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) => AlertDialog(
+                                      content: SingleChildScrollView(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SizedBox(
+                                            height: 170,
+                                            child: Column(
+                                              children: [
+                                                const Text(
+                                                    'Add new donation Record'),
+                                                TextField(
+                                                  controller: dateinput,
+                                                  decoration:
+                                                      const InputDecoration(
+                                                    icon: Icon(
+                                                        Icons.calendar_today),
+                                                    labelText: 'Enter Date',
+                                                  ),
+                                                  readOnly: true,
+                                                  onTap: () async {
+                                                    DateTime? pickedDate =
+                                                        await showDatePicker(
+                                                            context: context,
+                                                            initialDate:
+                                                                DateTime.now(),
+                                                            firstDate:
+                                                                DateTime(1990),
+                                                            lastDate:
+                                                                DateTime.now());
+                                                    if (pickedDate != null) {
+                                                      print(pickedDate);
+                                                      String formattedDate =
+                                                          DateFormat(
+                                                                  'yyyy-MM-dd')
+                                                              .format(
+                                                                  pickedDate);
+                                                      print(formattedDate);
+                                                      setState(() {
+                                                        dateinput.text =
+                                                            formattedDate;
+                                                      });
+                                                    } else {
+                                                      print(
+                                                          'Date is not Selected');
+                                                    }
+                                                  },
+                                                ),
+                                                TextField(
+                                                  onChanged: (value) {},
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ));
-                        },
-                        child: const Text('Add new Record'))
-                  ],
+                                    ));
+                          },
+                          child: const Text('Add new Record'))
+                    ],
+                  ),
                 ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Donation History',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20,
-                      ),
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Donation History',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20,
+                          ),
+                        ),
+                        const Divider(),
+                        ListView.builder(
+                          padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+                          scrollDirection: Axis.vertical,
+                          shrinkWrap: true,
+                          itemCount: null == _records ? 0 : _records!.length,
+                          itemBuilder: (context, index) {
+                            Record record = _records![index];
+                            return ListTile(
+                              title: Text(record.donorName.toString()),
+                              subtitle: Text(record.date),
+                            );
+                          },
+                        ),
+                      ],
                     ),
-                    const Divider(),
-                    ListView.builder(
-                      padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: null == _records ? 0 : _records!.length,
-                      itemBuilder: (context, index) {
-                        Record record = _records![index];
-                        return ListTile(
-                          title: Text(record.donorName.toString()),
-                          subtitle: Text(record.date),
-                        );
-                      },
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],
