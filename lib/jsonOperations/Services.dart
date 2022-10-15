@@ -1,4 +1,5 @@
 import 'package:flutter_blood_bank/jsonOperations/donationRecords.dart';
+import 'package:flutter_blood_bank/jsonOperations/location.dart';
 import 'package:http/http.dart' as http;
 
 import 'jsonToDart.dart';
@@ -51,6 +52,16 @@ class Services {
 
     final List<Record> record = recordsFromJson(jsonData);
     return record;
+  }
+
+  static Future<List<Location>> getLocations() async {
+    var uri = 'http://10.0.2.2:5000/locations';
+    var url = Uri.parse(uri);
+    http.Response response = await http.get(url);
+    final jsonData = response.body;
+
+    final List<Location> locations = locationFromJson(jsonData);
+    return locations;
   }
 }
 

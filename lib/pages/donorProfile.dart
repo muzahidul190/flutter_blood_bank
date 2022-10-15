@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_blood_bank/jsonOperations/Services.dart';
 import 'package:flutter_blood_bank/jsonOperations/donationRecords.dart';
+import 'package:flutter_blood_bank/utility/addNewRecord.dart';
+import 'package:flutter_blood_bank/utility/allFunctions.dart';
 import 'package:flutter_blood_bank/utility/appDrawer.dart';
 import 'package:intl/intl.dart';
 
@@ -17,6 +21,8 @@ class _BloodDonorState extends State<BloodDonor> {
   //My code start here
 
   TextEditingController dateinput = TextEditingController();
+  TextEditingController location = TextEditingController();
+  TextEditingController details = TextEditingController();
 
   List<Donor>? _donor;
   List<Record>? _records;
@@ -67,21 +73,24 @@ class _BloodDonorState extends State<BloodDonor> {
                 children: [
                   Expanded(
                     child: Column(
-                      children: [
-                        const CircleAvatar(
-                          maxRadius: 70,
-                          backgroundColor: Colors.transparent,
-                          backgroundImage:
-                              AssetImage('assets/images/default_male.png'),
+                      children: const [
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            maxRadius: 70,
+                            backgroundColor: Colors.transparent,
+                            backgroundImage:
+                                AssetImage('assets/images/default_male.png'),
+                          ),
                         ),
-                        const Text(
-                          'Donor Name',
-                          style: TextStyle(color: Colors.blue),
-                        ),
-                        Text(
-                          widget.id.toString(),
-                          style: const TextStyle(color: Colors.blue),
-                        ),
+                        // const Text(
+                        //   'Donor Name',
+                        //   style: TextStyle(color: Colors.blue),
+                        // ),
+                        // Text(
+                        //   widget.id.toString(),
+                        //   style: const TextStyle(color: Colors.blue),
+                        // ),
                       ],
                     ),
                   ),
@@ -92,7 +101,8 @@ class _BloodDonorState extends State<BloodDonor> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text('Name: '),
-                        Text('Total Donation: ')
+                        Text('Total Donation: '),
+                        Text('Phone Number: ')
                       ],
                     ),
                   ),
@@ -108,6 +118,11 @@ class _BloodDonorState extends State<BloodDonor> {
                         Text(_records == null
                             ? '0'
                             : _records!.length.toString()),
+                        Text(_donor == null
+                            ? 'No such donor'
+                            : (_donor![0].phone == null
+                                ? 'No Phone'
+                                : _donor![0].phone.toString())),
                       ],
                     ),
                   ),
@@ -123,62 +138,8 @@ class _BloodDonorState extends State<BloodDonor> {
                           onPressed: () {
                             showDialog(
                                 context: context,
-                                builder: (context) => AlertDialog(
-                                      content: SingleChildScrollView(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: SizedBox(
-                                            height: 170,
-                                            child: Column(
-                                              children: [
-                                                const Text(
-                                                    'Add new donation Record'),
-                                                TextField(
-                                                  controller: dateinput,
-                                                  decoration:
-                                                      const InputDecoration(
-                                                    icon: Icon(
-                                                        Icons.calendar_today),
-                                                    labelText: 'Enter Date',
-                                                  ),
-                                                  readOnly: true,
-                                                  onTap: () async {
-                                                    DateTime? pickedDate =
-                                                        await showDatePicker(
-                                                            context: context,
-                                                            initialDate:
-                                                                DateTime.now(),
-                                                            firstDate:
-                                                                DateTime(1990),
-                                                            lastDate:
-                                                                DateTime.now());
-                                                    if (pickedDate != null) {
-                                                      print(pickedDate);
-                                                      String formattedDate =
-                                                          DateFormat(
-                                                                  'yyyy-MM-dd')
-                                                              .format(
-                                                                  pickedDate);
-                                                      print(formattedDate);
-                                                      setState(() {
-                                                        dateinput.text =
-                                                            formattedDate;
-                                                      });
-                                                    } else {
-                                                      print(
-                                                          'Date is not Selected');
-                                                    }
-                                                  },
-                                                ),
-                                                TextField(
-                                                  onChanged: (value) {},
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ));
+                                builder: (context) =>
+                                    AddNewRecord(id: widget.id));
                           },
                           child: const Text('Add new Record'))
                     ],
@@ -200,6 +161,31 @@ class _BloodDonorState extends State<BloodDonor> {
                           ),
                         ),
                         const Divider(),
+                        (null == _records)
+                            ? const Text('No Donation records found!')
+                            : (_records!.length > 0)
+                                ? Container(
+                                    color: Colors.amber,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: const [
+                                          Expanded(
+                                              flex: 1,
+                                              child: Center(
+                                                  child: Text('Serial'))),
+                                          Expanded(
+                                              flex: 2,
+                                              child: Text('Donation Date')),
+                                          Expanded(
+                                              flex: 2,
+                                              child: Text('Days Passed')),
+                                        ],
+                                      ),
+                                    ),
+                                  )
+                                : const Center(
+                                    child: Text('No Donation records found!')),
                         ListView.builder(
                           padding: const EdgeInsets.only(left: 8.0, right: 8.0),
                           scrollDirection: Axis.vertical,
@@ -207,10 +193,39 @@ class _BloodDonorState extends State<BloodDonor> {
                           itemCount: null == _records ? 0 : _records!.length,
                           itemBuilder: (context, index) {
                             Record record = _records![index];
-                            return ListTile(
-                              title: Text(record.donorName.toString()),
-                              subtitle: Text(record.date),
+                            var dt = HttpDate.parse(record.date);
+                            String dateFormat =
+                                '${DateFormat('MMMM').format(dt)} ${dt.day}, ${dt.year}';
+                            return Container(
+                              color:
+                                  (index % 2 == 0) ? Colors.white : Colors.grey,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                        flex: 1,
+                                        child: Center(
+                                            child:
+                                                Text((index + 1).toString()))),
+                                    Expanded(flex: 2, child: Text(dateFormat)),
+                                    Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                            AllFunctions.dateDifferences(
+                                                start: _records![index].date))),
+                                    // Text((index + 1).toString()),
+                                    // Text(record.date),
+                                    // Text(AllFunctions.dateDifferences(
+                                    //     start: _records![index].date)),
+                                  ],
+                                ),
+                              ),
                             );
+                            // ListTile(
+                            //   title: Text(record.donorName.toString()),
+                            //   subtitle: Text(record.date),
+                            // );
                           },
                         ),
                       ],
