@@ -101,6 +101,7 @@ class _BloodDonorState extends State<BloodDonor> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: const [
                         Text('Name: '),
+                        Text('Blood Group'),
                         Text('Total Donation: '),
                         Text('Phone Number: ')
                       ],
@@ -115,6 +116,9 @@ class _BloodDonorState extends State<BloodDonor> {
                         Text(_donor == null
                             ? 'Donor Not found'
                             : _donor![0].name),
+                        Text(_donor == null
+                            ? 'Donor Not found'
+                            : _donor![0].bloodGroup),
                         Text(_records == null
                             ? '0'
                             : _records!.length.toString()),
